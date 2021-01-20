@@ -1,9 +1,10 @@
 # run.py
-print('> ./run.py')
 
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.curdir))
+
+project_root_path = os.path.abspath(os.curdir)
+sys.path.insert(0, project_root_path)
 
 from FlaskServer.server import app
 
