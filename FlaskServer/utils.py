@@ -1,38 +1,22 @@
 # utils.py
-print('> ./FlaskServer/utils.py')
 
 import numpy as np
+import time
 
-def commandline_server():
-    '''
-    Makes server interactive. Useful for debugging and exploring.
-    '''
-
-    while True:
-        ans = input('Input command: ')
-        if ans == 'q': break
-        try:
-            print(eval(ans))
-        except Exception as e:
-            print(f'Exception occured: [{e}]\n')
-
-
-def print_info(message):
-    print(f'[INFO]: {message}')
-
-
-def get_shape(request):
-    rh = request.headers
-    return (int(rh['height']), int(rh['width']), int(rh['channels']))
-
-
-def get_dtype(request):
-    return request.headers['dtype']
-
-
-def get_image(request, shape, dtype):
-    filestorage = request.files['image']
+def get_frame(request, shape, dtype):
+    filestorage = request.files['frame']
     file = filestorage.read()
-    img = np.frombuffer(file, dtype=dtype)
-    img = np.reshape(img, shape)
-    return img
+    frame = np.frombuffer(file, dtype=dtype)
+    frame = np.reshape(frame, shape)
+    return frame
+
+
+def timer(func):
+    '''Measure function runtime.'''
+    def inner_function(*args, **kwargs):
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        stop = time.perf_counter()
+        elapsed_time = round(stop - start, 4)
+        return {'result': result, 'time': elapsed_time}
+    return inner_function

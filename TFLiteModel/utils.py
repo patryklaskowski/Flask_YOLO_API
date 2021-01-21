@@ -7,9 +7,13 @@ import numpy as np
 
 
 def dict_keys_to_int(dictionary):
+    '''Change dictionary keys type to int.'''
     return {int(key):val for key, val in dictionary.items()}
 
+
 def draw_bboxes(image, bboxes, classes=None, show_label=True):
+    '''Draw predicted bounding boxes.'''
+    classes = dict_keys_to_int(classes)
     image = image.copy()
     num_classes = len(classes)
     image_h, image_w, *_ = image.shape
