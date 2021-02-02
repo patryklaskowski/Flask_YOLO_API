@@ -1,4 +1,4 @@
-# Yolov4TensorFlowLiteModel.py
+# yolo.py
 
 import tensorflow as tf
 import cv2
@@ -15,12 +15,15 @@ class Yolov4TensorFlowLiteModel:
         Path to .names file corresponding to provided model.
     '''
 
+    print('>> Yolov4TensorFlowLiteModel Class Created!')
+
     def __init__(self, model_path, names_path):
         self.model_path = model_path
         self.names_path = names_path
         self.classes = self.__read_class_names(names_path)
         self.num_class = len(self.classes)
         self.__startup_session()
+        print(f'>> Yolov4TensorFlowLiteModel object id no. {id(self)} created.')
 
 
     def __repr__(self):
