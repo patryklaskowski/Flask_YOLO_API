@@ -1,4 +1,4 @@
-# Flask YOLO API
+# Object Detection API
 
 ---
 
@@ -7,8 +7,8 @@
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/patryklaskowski/Flask_YOLO_API.git && \
-cd Flask_YOLO_API
+git clone https://github.com/patryklaskowski/Object_Detection_API.git && \
+cd Object_Detection_API
 ```
 
 ### 2. Run as Docker container using Docker-Compose
@@ -30,8 +30,8 @@ Go to `http://localhost:5000/` to see the README.md.<br>
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/patryklaskowski/Flask_YOLO_API.git && \
-cd Flask_YOLO_API
+git clone https://github.com/patryklaskowski/Object_Detection_API.git && \
+cd Object_Detection_API
 ```
 
 ### 2. To run server as Python script using venv (virtual environment).
