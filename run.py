@@ -1,15 +1,11 @@
 # run.py
 
-import sys
-import os
+from Server import app
 
-project_root_path = os.path.abspath(os.curdir)
-sys.path.insert(0, project_root_path)
-
-from FlaskServer.server import app
 
 host = '0.0.0.0'
 port = 5000
 debug = True
 
+print('\n\n-------------\n\n')
 app.run(host, port, debug)
