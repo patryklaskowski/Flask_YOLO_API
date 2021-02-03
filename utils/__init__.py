@@ -14,7 +14,7 @@ def load_yaml(path):
     return output
 
 
-def singleton_decorator(class_):
+def singleton(class_):
     instances = {}
     def wrapper(*args, **kwargs):
         if class_ not in instances:
@@ -23,7 +23,7 @@ def singleton_decorator(class_):
     return wrapper
 
 
-def timer_decorator(func):
+def timer(func):
     '''
     Measure function runtime.
     ______

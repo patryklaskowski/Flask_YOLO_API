@@ -1,11 +1,12 @@
 # Server
 
-# from Database.manager import DatabaseManager
+from Database import manager as db_manager
 from flask import Flask, request
 from flask_restful import Resource, Api
 from markdown import markdown
 from TFLiteModel import yolov4
-from utils import load_yaml, timer_decorator
+import time
+from utils import load_yaml, timer, draw_bboxes
 from .utils import get_frame
 
 
@@ -29,7 +30,6 @@ def doc():
 
 class ObjectDetector(Resource):
 
-    # db_manager = DatabaseManager(cfg['database_path'])
     print('>> ObjectDetector Class Created!')
 
     def __init__(self):
@@ -39,15 +39,26 @@ class ObjectDetector(Resource):
         return {'status': 'get method', 'model_name': model_name}
 
 
-    @timer_decorator
+    @timer
     def post(self, model_name, treshold=0.4):
         header = request.headers
         shape = int(header['height']), int(header['width']), int(header['channels'])
         dtype = header['dtype']
         frame = get_frame(request, shape, dtype)
+
         bboxes = yolov4.predict(frame, treshold)
         classes = yolov4.classes
         bboxes = [arr.tolist() for arr in bboxes]
+
+        ############
+        frame = draw_bboxes(frame, bboxes, classes)
+        precision = 3
+        timestamp = round(time.time() * 10**precision)
+        host = 'my_host_13'
+        connection = db_manager.connect()
+        db_manager.insert(connection, frame, timestamp, host)
+        ############
+
         response = {'bboxes': bboxes, 'classes': classes}
         return response
 api.add_resource(ObjectDetector, '/api/detect/<model_name>/<float:treshold>')

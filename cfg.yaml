@@ -3,4 +3,5 @@
 model_path: ./TFLiteModel/yolov4-coco-416/yolov4-coco-416.tflite
 names_path: ./TFLiteModel/yolov4-coco-416/yolov4-coco-416.names
 
-database_path: ./database/object-detection-db.sqlite
+database_path: ./Database/object-detection-db.sqlite
+images_path: ./Database/images
