@@ -11,6 +11,7 @@ class Camera:
     def __init__(self, source=0):
         self.source = source
         self.cam = cv2.VideoCapture(source)
+        time.sleep(0.5)
         print(f'>> Camera object id no. {id(self)} created.')
 
     def __repr__(self):
@@ -35,7 +36,8 @@ class Camera:
         timestamp = round(time.time() * 100)
         filename = f'frame_{timestamp}.jpg'
         filepath = os.path.join(path, filename)
-        cv2.imwrite(filepath, frame)
+        # To overcome color swap while writing
+        cv2.imwrite(filepath, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
 
     @staticmethod
     def resize(frame, size):
