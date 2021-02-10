@@ -1,6 +1,8 @@
 # camera.py
 
 import cv2
+import os
+import time
 
 class Camera:
 
@@ -9,6 +11,7 @@ class Camera:
     def __init__(self, source=0):
         self.source = source
         self.cam = cv2.VideoCapture(source)
+        time.sleep(0.5)
         print(f'>> Camera object id no. {id(self)} created.')
 
     def __repr__(self):
@@ -17,11 +20,29 @@ class Camera:
     def __del__(self):
         self.cam.release()
 
-    def get_frame(self):
+    def get_frame(self, size=None, save_path=None):
         success, frame = self.cam.read()
         assert success, 'Cannot get frame.'
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        if size is not None:
+            frame = Camera.resize(frame, size)
+        if save_path is not None:
+            Camera.save_frame(frame, save_path)
         return frame
+
+    @staticmethod
+    def save_frame(frame, path='.'):
+        assert os.path.exists(path), 'Provided save_path does not exist.'
+        timestamp = round(time.time() * 100)
+        filename = f'frame_{timestamp}.jpg'
+        filepath = os.path.join(path, filename)
+        # To overcome color swap while writing
+        cv2.imwrite(filepath, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+
+    @staticmethod
+    def resize(frame, size):
+        assert isinstance(size, (float, int)), 'Size must be numeric type.'
+        return cv2.resize(frame, (size, size))
 
     def release(self):
         self.cam.release()
