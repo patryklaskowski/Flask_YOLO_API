@@ -4,5 +4,6 @@ __pycache__
 .DS_Store
 *.tflite
 *.sqlite
-Database/images/
+Database/images/*
+TFLiteModel/models/model*
 
