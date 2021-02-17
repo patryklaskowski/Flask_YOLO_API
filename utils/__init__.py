@@ -39,9 +39,20 @@ def timer(func):
         result = func(*args, **kwargs)
         stop = time.perf_counter()
         elapsed_time = round(stop - start, 4)
-        return {'result': result, 'time': elapsed_time}
+        result['time'] = elapsed_time
+        return result
     return inner_function
 
+
+def use_per_sec(func):
+    def inner_function(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed_time = time.perf_counter() - start_time
+        ups = round(1/elapsed_time, 2)
+        result['use_per_sec'] = ups
+        return result
+    return inner_function
 
 def dict_keys_to_int(dictionary):
     '''Change dictionary keys type to int.'''

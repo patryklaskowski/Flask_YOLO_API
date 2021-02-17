@@ -10,8 +10,8 @@ path = 'cfg.yaml'
 cfg = load_yaml(path)
 
 
-db_path = cfg['database_path']
-images_path = cfg['images_path']
+db_path = cfg['database']
+images_path = cfg['images']
 
 if not os.path.exists(images_path):
     os.makedirs(images_path)

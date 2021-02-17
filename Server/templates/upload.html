@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+      <title>Upload</title>
+  </head>
+  <body>
+    <h1>Upload new model</h1>
+    <form action="{{ url_for('upload_file') }}"
+          method="POST"
+          enctype = "multipart/form-data">
+
+      <label for="architecture">Architecture:</label>
+      <input type="text"
+             name="architecture"
+             placeholder="yolov4"
+             required><br>
+
+      <label for="name">Name:</label>
+      <input type="text"
+             name="name"
+             placeholder="coco"
+             required><br>
+
+      <label for="size">Input size:</label>
+      <input type="text"
+             name="size"
+             placeholder="416"
+             required><br>
+
+      <label for="tflite">Tflite file:</label>
+      <input type="file"
+             name="tflite_file"
+             required><br>
+
+      <label for="names">Names file:</label>
+      <input type="file"
+             name="names_file"
+             required><br><br>
+
+      <input type="submit" value="Upload"/>
+      </form>
+
+      <br><p>To see available models go to <a href={{ url_for("available_models") }}>/model/available</a></p>
+
+
+
+  </body>
+</html>
