@@ -6,8 +6,8 @@ from .camera import Camera
 
 class API_Client:
 
-    url_structure = 'http://{ip}:5000/api/detect/{weights}/{threshold}'
-    client_auth_code = 'success'
+    URL_FMT = 'http://{ip}:5000/api/detect'
+    CLIENT_AUTH_CODE = 'success'
     print('>> API_Client Class Created!')
 
 
@@ -18,33 +18,39 @@ class API_Client:
         print(f'>> API_Client object id no. {id(self)} created.')
 
 
-    def post_frame(self, weights='coco', threshold=0.4):
+    def post_frame(self, hostname, weights='coco', size=None, threshold=0.4):
         '''
         ______
         INPUT:
         weights: string (default: 'coco')
+        size: int (default: None)
         threshold: float (default: 0.4)
         ______
         OUTPUT:
         response, frame
         '''
-        url = API_Client.url_structure.format(ip=self.ip, weights=weights, threshold=threshold)
-        frame = self.cam.get_frame()
-        files = self.__create_files(frame, msg='Object_detection')
-        headers = self.__create_headers(frame.shape, frame.dtype.name)
+        url = self._create_url(self.ip)
+        frame = self.cam.get_frame(size)
+        files = self._create_files(frame, msg='Object_detection')
+        headers = self._create_headers(weights, threshold, frame.shape, frame.dtype.name, hostname)
         response = requests.post(url, files=files, headers=headers)
         return response, frame
 
+    def _create_url(self, ip):
+        return API_Client.URL_FMT.format(ip=ip)
 
-    def __create_files(self, frame, msg='Object_detection'):
+    def _create_files(self, frame, msg='Object_detection'):
         return {'frame': frame.tostring(),
                 'msg': msg}
 
 
-    def __create_headers(self, shape, dtype):
+    def _create_headers(self, weights, threshold, shape, dtype, hostname):
         height, width, channels = shape
-        return {'client_auth': API_Client.client_auth_code,
+        return {'client_auth': API_Client.CLIENT_AUTH_CODE,
                 'height': str(height),
                 'width': str(width),
                 'channels': str(channels),
-                'dtype': str(dtype)}
+                'dtype': str(dtype),
+                'weights': str(weights),
+                'threshold': str(threshold),
+                'hostname': str(hostname)}
