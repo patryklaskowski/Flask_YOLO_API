@@ -1,37 +1,11 @@
 # run.py
 
-import argparse
-from utils import API_Client, print_settings
+from utils import API_Client, print_settings, parse_arguments
 
-parser = argparse.ArgumentParser()
 
-parser.add_argument('-ip', '--ipaddr',
-                    help='Server ip address.',
-                    default='0.0.0.0')
-parser.add_argument('-n', '-max', '--max_frames',
-                    help='Max number of frames to send',
-                    type=int,
-                    default=0)
-parser.add_argument('-w', '--weights',
-                    help='Object detection weights to run.',
-                    default='coco')
-parser.add_argument('-s', '-src', '--source',
-                    help='Camera source.',
-                    default='0')
-parser.add_argument('--size',
-                    help='Input size.',
-                    type=int)
-parser.add_argument('-t', '--threshold',
-                    help='Object detection probability threshold.',
-                    type=float,
-                    default=0.4)
-parser.add_argument('-ep', '-enter', '--enterpress', help='If provided, enter key press send new frame.',
-                    action='store_true')
-
-args = parser.parse_args()
+args = parse_arguments()
 
 hostname = 'IAMHOST'
-
 ip = args.ipaddr
 max_frames = args.max_frames
 weights = args.weights
@@ -72,4 +46,4 @@ while True:
     except Exception as e:
         print(f'----------------\nException occured:\n--------\n{e}\n\n----------------')
 
-    if counter >= max_frames: break
+    if max_frames != 0 and  counter >= max_frames: break
