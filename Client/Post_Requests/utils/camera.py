@@ -17,15 +17,12 @@ class Camera:
     def __repr__(self):
         return f'Camera({self.source})'
 
-    def __del__(self):
-        self.cam.release()
-
     def get_frame(self, size=None, save_path=None):
         success, frame = self.cam.read()
         assert success, 'Failed getting frame.'
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         if size:
-            frame = Camera.resize(frame, size)
+            frame = cv2.resize(frame, (size, size))
         if save_path is not None:
             Camera.save_frame(frame, save_path)
         return frame
@@ -38,11 +35,6 @@ class Camera:
         filepath = os.path.join(path, filename)
         # To overcome color swap while saving image with OpenCv
         cv2.imwrite(filepath, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
-
-    @staticmethod
-    def resize(frame, size):
-        assert isinstance(size, (float, int)), 'Size must be numeric type.'
-        return cv2.resize(frame, (size, size))
 
     def release(self):
         self.cam.release()
