@@ -14,7 +14,6 @@ def generate_frames(cam, size):
               b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encoded_frame) + b'\r\n')
 
 
-@flask_app.route('/video')
 @flask_app.route('/')
 def video_feed():
 
